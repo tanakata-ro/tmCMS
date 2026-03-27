@@ -1,0 +1,30 @@
+# tmCMS .gitignore
+
+# 設定ファイル（サーバーごとに異なるため除外）
+core/config.php
+
+# データベース
+db/blog.db
+db/blog.db-shm
+db/blog.db-wal
+
+# アップロードされたファイル
+uploads/*
+!uploads/.htaccess
+
+# インストール完了マーカー
+install/.installed
+
+# OS / エディタ
+.DS_Store
+Thumbs.db
+*.swp
+*.swo
+.idea/
+.vscode/
+
+# ログ
+*.log
+
+# PHP キャッシュ
+*.cache

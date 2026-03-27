@@ -1,0 +1,7 @@
+{
+    "name": "Default",
+    "description": "tmCMS 標準テーマ。白黒基調のマテリアルデザイン。",
+    "author": "tmCMS",
+    "version": "1.0.0",
+    "requires": "1.0.0"
+}
