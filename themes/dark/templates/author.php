@@ -3,7 +3,6 @@
 <div class="container">
   <main class="main-col">
 
-    <!-- 著者プロフィールカード -->
     <div class="card" style="padding:1.5rem;margin-bottom:1.5rem;display:flex;gap:1.25rem;align-items:flex-start;border:1px solid #f0f0f0">
       <?php if (!empty($tmcms['author']['avatar_path'])): ?>
       <img src="<?= tmcms_e($tmcms['author']['avatar_path']) ?>"
@@ -44,31 +43,13 @@
       </h2>
       <div class="post-card__meta">
         <?= date('Y年m月d日', strtotime($post['updated_at'])) ?>
-       
       </div>
       <p class="post-card__preview"><?= tmcms_e($post['preview']) ?></p>
     </article>
     <?php endforeach; ?>
+    <?php endif; ?>
 
-    <?php $pg = $tmcms['pagination']; if ($pg['total_pages'] > 1): ?>
-    <nav class="pagination">
-      <?php
-        $base = 'id=' . (int)$tmcms['author']['id'] . '&';
-        echo $pg['page'] > 1
-            ? "<a href=\"?{$base}page=".($pg['page']-1)."\">&lsaquo; 前へ</a>"
-            : "<span class=\"disabled\">&lsaquo; 前へ</span>";
-        for ($i = max(1,$pg['page']-2); $i <= min($pg['total_pages'],$pg['page']+2); $i++) {
-            echo $i === $pg['page']
-                ? "<span class=\"active\">{$i}</span>"
-                : "<a href=\"?{$base}page={$i}\">{$i}</a>";
-        }
-        echo $pg['page'] < $pg['total_pages']
-            ? "<a href=\"?{$base}page=".($pg['page']+1)."\">次へ &rsaquo;</a>"
-            : "<span class=\"disabled\">次へ &rsaquo;</span>";
-      ?>
-    </nav>
-    <?php endif; ?>
-    <?php endif; ?>
+    <?php echo tmcms_pager($tmcms['pagination']); ?>
   </main>
 
   <?php tmcms_sidebar($tmcms); ?>

@@ -65,10 +65,35 @@ function sc(string $st): string {
     return "<span class=\"status-chip {$c}\">{$l}</span>";
 }
 function pager(string $k, int $total, int $cur): string {
-    if ($total<=1) return '';
-    $h='<div class="pagination">';
-    for ($i=1;$i<=$total;$i++) { $p=array_merge($_GET,[$k=>$i]); $h.='<a href="?'.htmlspecialchars(http_build_query($p)).'"'.($i===$cur?' class="active"':'').">$i</a>"; }
-    return $h.'</div>';
+    if ($total <= 1) return '';
+    $h = '<div class="pagination">';
+    // 前へ
+    $pp = array_merge($_GET, [$k => $cur - 1]);
+    $h .= $cur > 1
+        ? '<a href="?' . htmlspecialchars(http_build_query($pp)) . '">&lsaquo;</a>'
+        : '<span class="disabled">&lsaquo;</span>';
+    // ページ番号: 1 … 4 5 6 … 10
+    $pages = [];
+    for ($i = 1; $i <= $total; $i++) {
+        if ($i === 1 || $i === $total || ($i >= $cur - 2 && $i <= $cur + 2)) {
+            $pages[] = $i;
+        }
+    }
+    $prev = null;
+    foreach ($pages as $p) {
+        if ($prev !== null && $p - $prev > 1) $h .= '<span class="ellipsis">…</span>';
+        $qa = array_merge($_GET, [$k => $p]);
+        $h .= $p === $cur
+            ? "<span class=\"active\">{$p}</span>"
+            : '<a href="?' . htmlspecialchars(http_build_query($qa)) . "\">{$p}</a>";
+        $prev = $p;
+    }
+    // 次へ
+    $np = array_merge($_GET, [$k => $cur + 1]);
+    $h .= $cur < $total
+        ? '<a href="?' . htmlspecialchars(http_build_query($np)) . '">&rsaquo;</a>'
+        : '<span class="disabled">&rsaquo;</span>';
+    return $h . '</div>';
 }
 function plist(array $posts, int $uid, string $role, bool $showAuthor=false): string {
     if (!$posts) return '<p style="padding:.75rem 1.25rem;color:#9e9e9e;font-size:.875rem">記事がありません。</p>';

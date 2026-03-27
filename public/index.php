@@ -1,6 +1,42 @@
 <?php
 require_once dirname(__DIR__) . '/core/bootstrap.php';
 
+// ── ページネーション生成関数（テーマから呼ばれる） ────────
+if (!function_exists('tmcms_pager')) {
+    function tmcms_pager(array $pg): string {
+        if ($pg['total_pages'] <= 1) return '';
+        $cur   = $pg['page'];
+        $total = $pg['total_pages'];
+        $base  = $pg['base_query'];
+        $html  = '<nav class="pagination" aria-label="ページ">';
+        $html .= $cur > 1
+            ? "<a href=\"?{$base}page=".($cur-1)."\" aria-label=\"前のページ\">&lsaquo;</a>"
+            : '<span class="disabled" aria-hidden="true">&lsaquo;</span>';
+        $pages = [];
+        for ($i = 1; $i <= $total; $i++) {
+            if ($i === 1 || $i === $total || ($i >= $cur - 2 && $i <= $cur + 2)) {
+                $pages[] = $i;
+            }
+        }
+        $prev = null;
+        foreach ($pages as $p) {
+            if ($prev !== null && $p - $prev > 1) {
+                $html .= '<span class="ellipsis">…</span>';
+            }
+            $html .= $p === $cur
+                ? "<span class=\"active\" aria-current=\"page\">{$p}</span>"
+                : "<a href=\"?{$base}page={$p}\">{$p}</a>";
+            $prev = $p;
+        }
+        $html .= $cur < $total
+            ? "<a href=\"?{$base}page=".($cur+1)."\" aria-label=\"次のページ\">&rsaquo;</a>"
+            : '<span class="disabled" aria-hidden="true">&rsaquo;</span>';
+        $html .= '</nav>';
+        return $html;
+    }
+}
+
+
 $pdo  = Database::getInstance();
 $page = max(1, (int)($_GET['page'] ?? 1));
 
@@ -54,7 +90,7 @@ $posts = array_map(function ($p) use ($parsedown) {
         ? $parsedown->text(class_exists('BbCode') ? BbCode::strip($p['content']) : $p['content'])
         : $p['content'];
     $plain        = strip_tags($raw);
-    $p['preview'] = mb_substr($plain, 0, 120) . (mb_strlen($plain) > 120 ? '…' : '');
+    $p['preview'] = mb_substr($plain, 0, 80) . (mb_strlen($plain) > 80 ? '…' : '');
     return $p;
 }, $rawPosts);
 

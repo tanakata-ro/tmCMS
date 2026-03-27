@@ -99,3 +99,35 @@ body > .site-header { flex-shrink: 0; }
 body > .container,
 body > .article-wrap { flex: 1 0 auto; }
 body > footer { flex-shrink: 0; }
+
+/* ── スマホ対応（追加） ──────────────────────────────────── */
+@media (max-width: 600px) {
+  /* ヘッダー */
+  .site-header { padding: 0 .75rem; }
+  .site-header__name { font-size: 1rem; }
+
+  /* 記事一覧 */
+  .post-card { padding: .9rem 1rem; }
+  .post-card__title { font-size: .95rem; }
+  .post-card__preview { font-size: .82rem; }
+
+  /* 記事詳細 */
+  .article__content { font-size: .9rem; line-height: 1.75; }
+  .article__content h2 { font-size: 1.15rem; }
+  .article__content h3 { font-size: 1rem; }
+  .article__content pre { font-size: .78rem; padding: .75rem; }
+
+  /* ページネーション */
+  .pagination { gap: .2rem; }
+  .pagination a,
+  .pagination span { padding: .35rem .6rem; font-size: .8rem; min-width: 2rem; text-align: center; }
+}
+
+/* ページネーション 省略記号 */
+.pagination .ellipsis {
+  padding: .35rem .3rem;
+  font-size: .875rem;
+  color: #9e9e9e;
+  pointer-events: none;
+  align-self: center;
+}
