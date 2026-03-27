@@ -105,12 +105,6 @@ tmcms/
 ├── themes/         テーマ
 │   ├── default/        白黒マテリアルデザイン（標準）
 │   ├── dark/           ダークモード
-│   ├── minimal/        セリフ体・余白重視
-│   ├── news/           ニュースサイト風
-│   ├── tech/           Zenn / Qiita 風
-│   ├── magazine/       マガジン / ポータル風
-│   ├── pastel/         パステル・ブログ向き
-│   └── admin_sidebar/  左サイドバー型管理テーマ
 └── uploads/        アップロード画像
 ```
 
